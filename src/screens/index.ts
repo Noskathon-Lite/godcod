@@ -1,0 +1,12 @@
+export {default as HomeScreen} from './Home/Home';
+export {default as StartUpScreen} from './StartUp/StartUp';
+export {default as LoginScreen} from './Login/Login';
+export {default as OnBoardingScreen1} from './OnBoarding/OnBoarding1';
+export {default as OnBoardingScreen2} from './OnBoarding/OnBoarding2';
+export {default as SignUpScreen} from './SignUp/SignUp';
+export {default as ForgotPasswordScreen} from './ForgotPassword/ForgotPassword';
+export {default as MyTabs} from 'navigation/TabNav/TabNav';
+export {default as TransactionsScreen} from './Transaction/Transaction';
+export {default as ProfileScreen} from './Profile/Profile';
+export {default as CategoriesScreen} from './Categories/Categories';
+export {default as AnalysisScreen} from './Analysis/Analysis';
