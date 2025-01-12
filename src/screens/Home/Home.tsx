@@ -1,69 +1,60 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import Svg, { Circle, Line, Path } from 'react-native-svg';
 
-const mockData = {
-  balance: 7783.00,
-  expense: -1187.40,
-  savings: 30,
-  revenueLastWeek: 4000.00,
-  foodLastWeek: -100.00,
+const initialData = {
+  balance: 73453.0,
+  expense: -23427.4,
+  savings: 40, // Percentage
   transactions: [
-    { id: 1, name: 'Salary', date: '18-27 April 30', type: 'Monthly', amount: 4000.00 },
-    { id: 2, name: 'Groceries', date: '17:00 April 24', type: 'Pantry', amount: -100.00 },
-    { id: 3, name: 'Rent', date: '8:30 April 15', type: 'Rent', amount: -674.40 },
+    { id: 1, name: 'Salary', date: '18-27 April 30', type: 'Monthly', amount: 4000.0 },
+    { id: 2, name: 'Groceries', date: '17:00 April 24', type: 'Pantry', amount: -100.0 },
+    { id: 3, name: 'Rent', date: '8:30 April 15', type: 'Rent', amount: -674.4 },
   ],
 };
 
-const Dashboard: React.FC = () => {
-  const handleButtonPress = (period: string) => {
-    console.log(`Selected period: ${period}`);
+const Dashboard = () => {
+  const [data, setData] = useState(initialData);
+
+  const renderProgressBar = () => {
+    const progress = data.savings / 100; // Convert percentage to fraction
+
+    return (
+      <View style={styles.progressBarBackground}>
+        <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
+      </View>
+    );
   };
 
   return (
     <ScrollView style={styles.container}>
+      <View>
       <View style={styles.header}>
         <Text style={styles.title}>Hi, Welcome Back</Text>
-        <Text style={styles.subtitle}>Good Morning</Text>
+        <Text style={styles.subtitle}>{`Good ${new Date().getHours() < 12 ? 'Morning' : 'Evening'}`}</Text>
       </View>
-      <View style={styles.balanceContainer}>
-        <Text style={styles.balanceText}>Total Balance</Text>
-        <Text style={styles.balanceAmount}>${mockData.balance.toFixed(2)}</Text>
-        <Text style={styles.expenseText}>Total Expense</Text>
-        <Text style={styles.expenseAmount}>${mockData.expense.toFixed(2)}</Text>
+      
+      <View style={styles.rowContainer}>
+        <View style={styles.balanceContainer}>
+          <Text style={styles.balanceText}>Total Balance</Text>
+          <Text style={styles.balanceAmount}>${data.balance.toFixed(2)}</Text>
+        </View>
+        <View style={styles.expenseContainer}>
+          <Text style={styles.expenseText}>Total Expense</Text>
+          <Text style={styles.expenseAmount}>${data.expense.toFixed(2)}</Text>
+        </View>
       </View>
-      {/* <View style={styles.savingsContainer}>
-        <ProgressCircle
-          style={{ height: 100 }}
-          progress={mockData.savings / 100}
-          progressColor={'#00D09E'}
-        />
-        <Text>{mockData.savings}% of Your Expenses, Looks Good.</Text>
+
+      <View style={styles.progressContainer}>
+        {renderProgressBar()}
+        <View style={styles.progressLabels}>
+          <Text style={styles.progressText}>{data.savings}% </Text>
+          <Text style={styles.maxExpenseText}>Savings Goal Achieved</Text>
+        </View>
       </View>
-      <View style={styles.chartContainer}>
-        <BarChart
-          style={{ height: 200 }}
-          data={[mockData.revenueLastWeek, mockData.foodLastWeek]}
-          svg={{ fill: '#00D09E' }}
-          contentInset={{ top: 30, bottom: 30 }}
-          curve={shape.curveNatural}
-        />
-      </View> */}
-      <View style={styles.buttonGroup}>
-        {['Daily', 'Weekly', 'Monthly'].map((period) => (
-          <TouchableOpacity key={period} style={styles.button} onPress={() => handleButtonPress(period)}>
-            <Text style={styles.buttonText}>{period}</Text>
-          </TouchableOpacity>
-        ))}
       </View>
-      <View style={styles.transactionList}>
-        {mockData.transactions.map((transaction) => (
-          <View key={transaction.id} style={styles.transactionItem}>
-            <Text>{transaction.name}</Text>
-            <Text>{transaction.date}</Text>
-            <Text>{transaction.type}</Text>
-            <Text>${transaction.amount.toFixed(2)}</Text>
-          </View>
-        ))}
+      <View style={styles.floatStyle}>
+
       </View>
     </ScrollView>
   );
@@ -72,76 +63,87 @@ const Dashboard: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#00D09E',
   },
   header: {
-    padding: 20,
-    backgroundColor: '#00D09E',
+    padding: 30,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#000',
   },
   subtitle: {
     fontSize: 16,
-    color: '#fff',
+    color: '#000',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: 20,
+
   },
   balanceContainer: {
-    padding: 20,
-    backgroundColor: '#fff',
+    alignItems: 'center',
   },
   balanceText: {
-    fontSize: 16,
-    color: '#000',
+    fontSize: 14,
+    color: '#fff',
   },
   balanceAmount: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#fff',
+  },
+  expenseContainer: {
+    alignItems: 'center',
   },
   expenseText: {
-    fontSize: 16,
-    color: '#000',
+    fontSize: 14,
+    color: '#fff',
   },
   expenseAmount: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#ff0000',
+    color: '#1E90FF',
   },
-  savingsContainer: {
+  progressContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+    borderRadius: 25,
     padding: 20,
-    backgroundColor: '#fff',
+  },
+  progressBarBackground: {
+    width: '100%',
+    height: 20,
+    backgroundColor: '#e6e6e6',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  progressBarFill: {
+    height: '100%',
+    backgroundColor: '#000',
+  },
+  progressLabels: {
+    flexDirection:'row',
+    marginTop: 10,
     alignItems: 'center',
   },
-  chartContainer: {
-    padding: 20,
+  progressText: {
+    fontSize: 14,
+    color: '#000',
+  },
+  maxExpenseText: {
+    fontSize: 14,
+    color: '#000',
+  },
+  floatStyle: {
+    marginTop: 40,
     backgroundColor: '#fff',
-  },
-  buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 20,
-  },
-  button: {
-    padding: 10,
-    backgroundColor: '#00D09E',
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  transactionList: {
-    padding: 20,
-  },
-  transactionItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 10,
-    backgroundColor: '#fff',
-    marginBottom: 10,
-    borderRadius: 5,
+    width: Dimensions.get('window').width,
+    zIndex: 2,
+    borderTopLeftRadius: 80,
+    borderTopRightRadius: 80,
   },
 });
 

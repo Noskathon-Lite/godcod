@@ -1,21 +1,12 @@
-// Function to fetch authentication data from firebase and return it
-
-// export const fetchAuthData = async () => {
-//   const auth = firebase.auth();
-//   return auth.currentUser;
-// };
-
-// Helper functions for authentication
 import auth from '@react-native-firebase/auth';
 
-// Sign up a user with email verification
+// Sign up a user
 export const signUp = async (email: string, password: string) => {
   try {
     const userCredential = await auth().createUserWithEmailAndPassword(
       email,
       password,
     );
-    await userCredential.user.sendEmailVerification(); // Send verification email
     return userCredential;
   } catch (error) {
     console.error('Error during sign-up:', error);
@@ -23,34 +14,41 @@ export const signUp = async (email: string, password: string) => {
   }
 };
 
-// Log in a user only if the email is verified
 export const logIn = async (email: string, password: string) => {
   try {
-    const userCredential = await auth().signInWithEmailAndPassword(
-      email,
-      password,
-    );
-
-    if (!userCredential.user.emailVerified) {
-      throw new Error(
-        'Email not verified. Please verify your email before logging in.',
-      );
-    }
-
+    const userCredential = await auth().signInWithEmailAndPassword(email, password);
     return userCredential;
-  } catch (error) {
+  } catch (error:any) {
+    let errorMessage = 'An error occurred during login.';
+    switch (error.code) {
+      case 'auth/user-not-found':
+        errorMessage = 'No account found with this email.';
+        break;
+      case 'auth/wrong-password':
+        errorMessage = 'Incorrect password. Please try again.';
+        break;
+      case 'auth/too-many-requests':
+        errorMessage = 'Too many failed attempts. Please try again later.';
+        break;
+      default:
+        errorMessage = error.message;
+    }
     console.error('Error during log-in:', error);
+    throw new Error(errorMessage);
+  }
+};
+
+// Log out a user
+export const logOut = async () => {
+  try {
+    await auth().signOut();
+  } catch (error) {
+    console.error('Error during log-out:', error);
     throw error;
   }
 };
 
-// Forgot password: Send password reset email
-export const forgotPassword = async (email: string) => {
-  try {
-    await auth().sendPasswordResetEmail(email);
-    return 'Password reset email sent!';
-  } catch (error) {
-    console.error('Error during password reset:', error);
-    throw error;
-  }
+// Listen for authentication state changes
+export const onAuthStateChanged = (callback: (user: any) => void) => {
+  return auth().onAuthStateChanged(callback);
 };

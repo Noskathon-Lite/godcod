@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import {ApplicationStackParamList, MainParamsList} from 'types/navigation';
 
-import {logIn, signUp, forgotPassword} from 'services/Auth';
+import {logIn, signUp} from 'services/Auth';
 
 const Login = () => {
   const {
@@ -41,6 +41,7 @@ const Login = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleButtonPress = useCallback(
     (screenName: keyof ApplicationStackParamList) => {
@@ -89,14 +90,29 @@ const Login = () => {
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (emailError || passwordError || !email || !password) {
-      Alert.alert('Invalid Input', 'Please fix the errors before proceeding.');
+      const errorMsg = !email
+        ? 'Email is required.'
+        : !password
+        ? 'Password is required.'
+        : 'Please fix the errors before proceeding.';
+      Alert.alert('Invalid Input', errorMsg);
       return;
     }
-    handleButtonPress('Auth');
+  
+    setIsLoading(true); // Set a loading state
+    try {
+      const userCredential = await logIn(email, password);
+      Alert.alert('Success', 'Login successful!');
+      handleButtonPress('Auth'); // Pass user data if necessary
+    } catch (error:any) {
+      Alert.alert('Login Failed', error.message);
+    } finally {
+      setIsLoading(false); // Reset loading state
+    }
   };
-
+  
   const handleSignUp = () => {
     handleSingUpButtonPress('SignUpScreen');
   };
