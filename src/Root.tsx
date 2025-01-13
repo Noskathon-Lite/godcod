@@ -2,8 +2,7 @@ import {RootNavigation} from 'navigation';
 import React, {FC} from 'react';
 
 import auth from '@react-native-firebase/auth';
-import LoginScreen from 'screens/Login/Login';
-import HomeScreen from './screens/Home/Home';
+import EditProfile from 'screens/EditProfile/EditProfile';
 interface IProps {}
 
 /**
@@ -12,7 +11,7 @@ interface IProps {}
  **/
 
 const Root: FC<IProps> = props => {
-  return <RootNavigation />;
+  return <RootNavigation/>;
 };
 
 export default Root;

@@ -14,6 +14,7 @@ import {
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker'; // Import the functions
 import { ApplicationStackParamList, AuthStackParamList, MainParamsList } from 'types/navigation';
 
+
 const Profile = () => {
   const {
     container,
@@ -32,6 +33,8 @@ const Profile = () => {
     textStyle,
   } = styles;
 
+
+  
   const [profileImageUri, setProfileImageUri] = useState<string>(
     'https://via.placeholder.com/150',
   );
@@ -50,15 +53,27 @@ const Profile = () => {
       handleButtonPress('EditProfileScreen');
     };const handleSecurity = () => {
       handleButtonPress('SecurityScreen');
-    };const handleSetings = () => {
+    };const handleSettings = () => {
       handleButtonPress('SettingsScreen');
     };const handleHelp = () => {
       handleButtonPress('HelpScreen');
     };
 
-    const handleLogout = () => {
-      // Handle logout
-    };
+
+  //Handle logout 
+  const handleLogout = () => {
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      {
+        text: 'Yes',
+        onPress: () => {
+          navigation.navigate('LoginScreen');
+        },
+      },
+      {
+        text: 'No',
+      },
+    ]);
+  };
 
 
 
@@ -156,7 +171,9 @@ const Profile = () => {
             <Text style={profileName}>John Smith</Text>
             <Text style={profileId}>ID: 25030024</Text>
             <View style={menuContainer}>
-              <TouchableOpacity style={menuItem}>
+              <TouchableOpacity style={menuItem} onPress={
+                handleEditProfile
+              }>
                 <Image
                   source={require('../../assets/images/user.png')}
                   style={menuIcon}
@@ -164,7 +181,7 @@ const Profile = () => {
                 <Text style={menuText}>Edit Profile</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={menuItem}>
+              <TouchableOpacity style={menuItem} onPress={handleSecurity}>
                 <Image
                   source={require('../../assets/images/security.png')}
                   style={menuIcon}
@@ -172,15 +189,15 @@ const Profile = () => {
                 <Text style={menuText}>Security</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={menuItem}>
-                <Image
+              <TouchableOpacity style={menuItem} onPress={handleSettings}>
+                <Image 
                   source={require('../../assets/images/setting.png')}
                   style={menuIcon}
                 />
                 <Text style={menuText}>Settings</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={menuItem}>
+              <TouchableOpacity style={menuItem}onPress={handleHelp}>
                 <Image
                   source={require('../../assets/images/help.png')}
                   style={menuIcon}
@@ -188,7 +205,9 @@ const Profile = () => {
                 <Text style={menuText}>Help</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={menuItem}>
+              <TouchableOpacity style={menuItem} onPress={
+                handleLogout
+              }>
                 <Image
                   source={require('../../assets/images/logout.png')}
                   style={menuIcon}

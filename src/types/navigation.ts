@@ -20,6 +20,9 @@ export type AuthStackParamList = {
   HelpScreen: undefined;
   ChangePasswordScreen: undefined;
   TermsNConditionsScreen: undefined;
+  SettingsNotification: undefined;
+  NotificationScreen: undefined;
+  NotificationSettingsScreen: undefined;
 };
 
 export type ApplicationStackParamList = {

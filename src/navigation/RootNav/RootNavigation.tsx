@@ -51,6 +51,7 @@ const RootNavigation: FC = (): React.JSX.Element => {
           }
 
         }>
+          
           <Stack.Screen name="StartUpScreen" component={StartUpScreen} />
           <Stack.Screen name="OnBoardingScreen1" component={OnBoardingScreen1} />
           <Stack.Screen name="OnBoardingScreen2" component={OnBoardingScreen2} />
