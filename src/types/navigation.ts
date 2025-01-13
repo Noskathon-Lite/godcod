@@ -9,11 +9,17 @@ export type MainParamsList = {
 
 export type AuthStackParamList = {
   HomeScreen: undefined;
-  Tabs: undefined;
-  Profile: undefined;
-  Categories: undefined;
-  Analysis: undefined;
-  Transactions: undefined;
+  TabsScreen: undefined;
+  ProfileScreen: undefined;
+  CategoriesScreen: undefined;
+  AnalysisScreen: undefined;
+  TransactionsScreen: undefined;
+  EditProfileScreen: undefined;
+  SecurityScreen: undefined;
+  SettingsScreen: undefined;
+  HelpScreen: undefined;
+  ChangePasswordScreen: undefined;
+  TermsNConditionsScreen: undefined;
 };
 
 export type ApplicationStackParamList = {

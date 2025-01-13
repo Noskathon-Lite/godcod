@@ -122,7 +122,7 @@ const SignUp = () => {
       setPasswordError(
         'Password must be at least 8 characters long, include uppercase and lowercase letters, and contain at least one number.',
       );
-      signUp(email, password);
+     
       
     } else {
       setPasswordError('');
@@ -142,7 +142,7 @@ const SignUp = () => {
   const handleSingUp = () => {
     if (emailError || passwordError || !email || !password) {
       Alert.alert('Invalid Input', 'Please fix the errors before proceeding.');
-      return;
+      return  signUp(email, password)
     }
     handleLoginButtonPress('LoginScreen');
   };

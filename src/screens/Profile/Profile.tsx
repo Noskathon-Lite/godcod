@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
@@ -11,6 +12,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker'; // Import the functions
+import { ApplicationStackParamList, AuthStackParamList, MainParamsList } from 'types/navigation';
 
 const Profile = () => {
   const {
@@ -33,6 +35,33 @@ const Profile = () => {
   const [profileImageUri, setProfileImageUri] = useState<string>(
     'https://via.placeholder.com/150',
   );
+
+  const navigation =
+  useNavigation<NavigationProp<keyof ApplicationStackParamList>>();
+
+
+   const handleButtonPress = useCallback(
+      (screenName: keyof AuthStackParamList) => {
+        navigation.navigate(screenName);
+      },
+      [navigation],
+    );
+    const handleEditProfile = () => {
+      handleButtonPress('EditProfileScreen');
+    };const handleSecurity = () => {
+      handleButtonPress('SecurityScreen');
+    };const handleSetings = () => {
+      handleButtonPress('SettingsScreen');
+    };const handleHelp = () => {
+      handleButtonPress('HelpScreen');
+    };
+
+    const handleLogout = () => {
+      // Handle logout
+    };
+
+
+
 
   const handleImageChange = () => {
     Alert.alert('Change Profile Picture', 'Choose an option:', [
@@ -148,7 +177,7 @@ const Profile = () => {
                   source={require('../../assets/images/setting.png')}
                   style={menuIcon}
                 />
-                <Text style={menuText}>Setting</Text>
+                <Text style={menuText}>Settings</Text>
               </TouchableOpacity>
 
               <TouchableOpacity style={menuItem}>
